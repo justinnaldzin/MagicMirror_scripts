@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import time
 import itertools
 import RPi.GPIO as GPIO
@@ -17,7 +18,8 @@ def main():
     GPIO.output(button_light_pin, 1)  # turn button light ON
 
     # Iceweasel configuration
-    rkiosk_ext_file = "/home/pi/magicmirror/r_kiosk-0.9.0-fx.xpi"  # location of the "R-kiosk" extension
+    script_dir = os.path.dirname(os.path.join(os.getcwd(), __file__))
+    rkiosk_ext_file = script_dir + "/r_kiosk-0.9.0-fx.xpi"  # location of the "R-kiosk" extension
     profile = webdriver.FirefoxProfile()
     profile.add_extension(rkiosk_ext_file)
     driver = webdriver.Firefox(profile)
