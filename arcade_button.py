@@ -24,7 +24,7 @@ def main():
     profile.add_extension(rkiosk_ext_file)
     driver = webdriver.Firefox(profile)
     driver.get('http://localhost/')
-    websites_list = ['http://www.google.com', 'http://www.yahoo.com', 'http://localhost/']
+    websites_list = ['http://localhost/wordclock/index.html', 'https://news.google.com', 'http://localhost/']
     websites_cycle = itertools.cycle(websites_list)
 
     # Wait for button push
