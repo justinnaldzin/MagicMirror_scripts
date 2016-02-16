@@ -7,6 +7,7 @@ import RPi.GPIO as GPIO
 
 
 pir_pin = 23
+button_light_pin = 12
 shutoff_delay = 30  # seconds
 GPIO.setmode(GPIO.BCM)
 os.environ['DISPLAY'] = ":0"  # set the DISPLAY variable in the environment
@@ -15,6 +16,8 @@ os.environ['DISPLAY'] = ":0"  # set the DISPLAY variable in the environment
 def main():
 
     GPIO.setup(pir_pin, GPIO.IN)
+    GPIO.setup(button_light_pin, GPIO.OUT)
+    GPIO.output(button_light_pin, 1)  # turn button light ON
     display_on = True
     last_motion_time = time.time()
 
@@ -25,11 +28,13 @@ def main():
                 # Power ON HDMI with preferred settings and force DPMS on
                 subprocess.call('/opt/vc/bin/tvservice --preferred && xset dpms force on', shell=True)
                 display_on = True
+                GPIO.output(button_light_pin, 1)  # turn button light ON
         else:
             if display_on and time.time() > (last_motion_time + shutoff_delay):
                 # Power OFF the display
                 subprocess.call('/opt/vc/bin/tvservice -off', shell=True)
                 display_on = False
+                GPIO.output(button_light_pin, 0)  # turn button light OFF
         time.sleep(1)
 
 
